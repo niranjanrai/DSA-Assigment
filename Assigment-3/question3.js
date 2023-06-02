@@ -28,9 +28,36 @@ Input: nums = [1,2,3]
 Output: [1,3,2]
 
 
-
-
-💡 **Question 4**
-
-
 */
+
+function nextPermutation(nums) {
+  // Find the first pair of adjacent elements where nums[i] < nums[i+1]
+  let i = nums.length - 2;
+  while (i >= 0 && nums[i] >= nums[i + 1]) {
+    i--;
+  }
+
+  if (i >= 0) {
+    // Find the smallest element in the subarray to the right of nums[i] that is greater than nums[i]
+    let j = nums.length - 1;
+    while (nums[j] <= nums[i]) {
+      j--;
+    }
+    // Swap nums[i] with nums[j]
+    [nums[i], nums[j]] = [nums[j], nums[i]];
+  }
+
+  // Reverse the subarray to the right of index i
+  let left = i + 1;
+  let right = nums.length - 1;
+  while (left < right) {
+    [nums[left], nums[right]] = [nums[right], nums[left]];
+    left++;
+    right--;
+  }
+}
+
+// Example usage:
+const nums = [1, 2, 3];
+nextPermutation(nums);
+console.log(nums); // Output: [1, 3, 2]

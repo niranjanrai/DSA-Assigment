@@ -1,47 +1,39 @@
 /*
 
 💡 **Question 5**
-You are given a large integer represented as an integer array digits, where each
-digits[i] is the ith digit of the integer. The digits are ordered from most significant
-to least significant in left-to-right order. The large integer does not contain any
-leading 0's.
+You have n coins and you want to build a staircase with these coins. The staircase consists of k rows where the ith row has exactly i coins. The last row of the staircase **may be** incomplete.
 
-Increment the large integer by one and return the resulting array of digits.
+Given the integer n, return *the number of **complete rows** of the staircase you will build*.
 
-**Example 1:**
-Input: digits = [1,2,3]
-Output: [1,2,4]
+**Input:** n = 5
 
-**Explanation:** The array represents the integer 123.
-Incrementing by one gives 123 + 1 = 124.
-Thus, the result should be [1,2,4].
+**Output:** 2
+
+**Explanation:** Because the 3rd row is incomplete, we return 2.
 
 */
 
-function plusOne(digits) {
-  const n = digits.length;
-  let carry = 1;
+function arrangeCoins(n) {
+  let left = 0;
+  let right = n;
 
-  for (let i = n - 1; i >= 0; i--) {
-    let sum = digits[i] + carry;
-    if (sum > 9) {
-      digits[i] = 0;
-      carry = 1;
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    let curr = (mid * (mid + 1)) / 2;
+
+    if (curr === n) {
+      return mid; // Found exact number of coins required for complete rows
+    } else if (curr < n) {
+      left = mid + 1; // Move to the right half
     } else {
-      digits[i] = sum;
-      carry = 0;
-      break; // No need to continue the iteration
+      right = mid - 1; // Move to the left half
     }
   }
 
-  if (carry === 1) {
-    digits.unshift(1); // Insert 1 at the beginning
-  }
-
-  return digits;
+  return right; // Return the maximum number of complete rows
 }
 
-// Example usage:
-const digits = [1, 2, 3];
-const result = plusOne(digits);
-console.log(result); // Output: [1, 2, 4]
+// Example usage
+const n = 5;
+const completeRows = arrangeCoins(n);
+console.log(completeRows); // Output: 2

@@ -1,25 +1,26 @@
 /*
-Question 6
-Given a non-empty array of integers nums, every element appears twice except
-for one. Find that single one.
+💡 **Question 6**
+Given an integer array nums sorted in **non-decreasing** order, return *an array of **the squares of each number** sorted in non-decreasing order*.
 
-You must implement a solution with a linear runtime complexity and use only
-constant extra space.
+**Example 1:**
 
-Example 1:
-Input: nums = [2,2,1]
-Output: 1
+Input: nums = [-4,-1,0,3,10]
+
+Output: [0,1,9,16,100]
+
+**Explanation:** After squaring, the array becomes [16,1,0,9,100].
+After sorting, it becomes [0,1,9,16,100]
+
+
 */
 
-function singleNumber(nums) {
-  let result = 0;
-  for (let num of nums) {
-    result ^= num;
-  }
-  return result;
+function sortedSquares(nums) {
+  const squaredArray = nums.map((num) => num * num); // Square each number
+  squaredArray.sort((a, b) => a - b); // Sort the squared array in non-decreasing order
+  return squaredArray;
 }
 
-// Example usage:
-const nums = [2, 2, 1];
-const result = singleNumber(nums);
-console.log(result); // Output: 1
+// Example usage
+const nums = [-4, -1, 0, 3, 10];
+const squaredSorted = sortedSquares(nums);
+console.log(squaredSorted); // Output: [0, 1, 9, 16, 100]

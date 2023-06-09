@@ -31,27 +31,36 @@ The groups are "aa", "bb", and "ccc". This compresses to "a2b2c3".
 
 */
 
-const reverseStr = (s, k) => {
-  const chars = s.split(""); // Convert the string to an array of characters
+function compress(chars) {
+  let compressedIndex = 0; // Pointer for the position to store compressed characters
+  let count = 1; // Counter for consecutive repeating characters
 
-  for (let i = 0; i < chars.length; i += 2 * k) {
-    let start = i; // Start index of the chunk
-    let end = Math.min(i + k - 1, chars.length - 1); // End index of the chunk
+  for (let i = 1; i <= chars.length; i++) {
+    if (i < chars.length && chars[i] === chars[i - 1]) {
+      // If the current character is the same as the previous one, increment the counter
+      count++;
+    } else {
+      // Otherwise, we have encountered a new character or reached the end of the array
+      chars[compressedIndex] = chars[i - 1]; // Store the current character
 
-    // Reverse the first k characters in the chunk
-    while (start < end) {
-      const temp = chars[start];
-      chars[start] = chars[end];
-      chars[end] = temp;
-      start++;
-      end--;
+      if (count > 1) {
+        // If the count is greater than 1, we need to append the count to the compressed string
+        const countString = count.toString();
+
+        for (let j = 0; j < countString.length; j++) {
+          chars[++compressedIndex] = countString[j]; // Store each digit of the count
+        }
+      }
+
+      compressedIndex++; // Move to the next position for storing the next compressed character
+      count = 1; // Reset the counter for the new character
     }
   }
 
-  return chars.join(""); // Convert the array back to a string
-};
+  return compressedIndex; // Return the new length of the array
+}
 
 // Example usage:
-const s = "abcdefg";
-const k = 2;
-console.log(reverseStr(s, k)); // Output: "bacdfeg"
+const chars = ["a", "a", "b", "b", "c", "c", "c"];
+console.log(compress(chars)); // Output: 6
+console.log(chars.slice(0, 6)); // Output: ["a", "2", "b", "2", "c", "3"]

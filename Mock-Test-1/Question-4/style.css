@@ -45,7 +45,12 @@ nav > .nav-items > li {
   font-weight: 500;
   color: #000;
 }
-
+nav > .nav-items > li > a {
+  transition: all 0.3s ease-in-out;
+}
+nav > .nav-items > li > a:hover {
+  color: #007c89;
+}
 .logo > img {
   width: 150px;
 }

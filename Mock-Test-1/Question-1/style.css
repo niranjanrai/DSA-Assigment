@@ -1,0 +1,62 @@
+/* In this example, the .static-box element has the default position: static;. It will be positioned in the normal flow of the document, and no positioning offset is applied. */
+
+.static-box {
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+}
+
+/* In this example, the .fixed-box element has position: fixed;. It is positioned 20 pixels from the top and 20 pixels from the right of the browser window. It will remain fixed at that position even when scrolling the page. */
+
+.fixed-box {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 100px;
+  height: 100px;
+  background-color: red;
+}
+
+/* In this example, the .sticky-box element has position: sticky;. It is positioned 50 pixels from the top of its containing block (the browser window in this case). As you scroll the page, it will behave like a relative position element until it reaches the specified threshold (50px from the top), at which point it becomes fixed and remains fixed at that position. */
+
+.sticky-box {
+  position: sticky;
+  top: 50px;
+  width: 100px;
+  height: 100px;
+  background-color: green;
+}
+
+/* In this example, the .relative-container element has position: relative;, and the .relative-box element has position: relative;. The .relative-box is positioned 30 pixels down and 50 pixels to the right relative to its normal position within the .relative-container. */
+
+.relative-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  background-color: lightblue;
+}
+.relative-box {
+  position: relative;
+  top: 30px;
+  left: 50px;
+  width: 100px;
+  height: 100px;
+  background-color: orange;
+}
+
+/* In this example, the .absolute-container element has position: relative;, and the .absolute-box element has position: absolute;. The .absolute-box is positioned 50 pixels from the top and 20 pixels from the right of its closest positioned ancestor (.absolute-container), or the initial containing block if no ancestor is positioned. */
+
+.absolute-container {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  background-color: lightgray;
+}
+.absolute-box {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  width: 100px;
+  height: 100px;
+  background-color: purple;
+}

@@ -1,82 +1,38 @@
 /*
 
-  4. **Maximum Gap**
+  4. **Move all zeroes to end of array**
 
-Given an integer array `nums`, return *the maximum difference between two successive elements in its sorted form*. If the array contains less than two elements, return `0`.
+Given an array of random numbers, Push all the zero’s of a given array to the end of the array. For example, if the given arrays is {1, 9, 8, 4, 0, 0, 2, 7, 0, 6, 0}, it should be changed to {1, 9, 8, 4, 2, 7, 6, 0, 0, 0, 0}. The order of all other elements should be same. Expected time complexity is O(n) and extra space is O(1).
 
-You must write an algorithm that runs in linear time and uses linear extra space.
+**Example:**
+Input :  arr[] = {1, 2, 0, 4, 3, 0, 5, 0};
+Output : arr[] = {1, 2, 4, 3, 5, 0, 0, 0};
 
-**Example 1:**
-Input: nums = [3,6,9,1]
-Output: 3
-Explanation: The sorted form of the array is [1,3,6,9], either (3,6) or (6,9) has the maximum difference 3.
+Input : arr[]  = {1, 2, 0, 0, 0, 3, 6};
+Output : arr[] = {1, 2, 3, 6, 0, 0, 0};
 
-**Example 2:**
-Input: nums = [10]
-Output: 0
-Explanation: The array contains less than 2 elements, therefore return 0.
-
-**Constraints:**
-
-- `1 <= nums.length <= 10^5`
-- `0 <= nums[i] <= 10^9`
 */
+function moveZeroesToEnd(arr) {
+  let nonZeroIndex = 0;
 
-function maximumGap(nums) {
-  if (nums.length < 2) {
-    return 0;
+  // Move all non-zero elements to the left side of the array
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] !== 0) {
+      arr[nonZeroIndex] = arr[i];
+      nonZeroIndex++;
+    }
   }
 
-  // Find the maximum element
-  let maxNum = Math.max(...nums);
-
-  let exp = 1; // Current digit being considered
-  let radix = 10; // Base 10 for decimal numbers
-  const n = nums.length;
-
-  // Perform Radix Sort
-  while (maxNum / exp > 0) {
-    const count = Array(radix).fill(0); // Count array for each digit
-    const output = Array(n).fill(0); // Output array for sorted elements
-
-    // Count the occurrences of each digit
-    for (let i = 0; i < n; i++) {
-      const digit = Math.floor(nums[i] / exp) % radix;
-      count[digit]++;
-    }
-
-    // Calculate the cumulative count
-    for (let i = 1; i < radix; i++) {
-      count[i] += count[i - 1];
-    }
-
-    // Build the output array in sorted order
-    for (let i = n - 1; i >= 0; i--) {
-      const digit = Math.floor(nums[i] / exp) % radix;
-      output[count[digit] - 1] = nums[i];
-      count[digit]--;
-    }
-
-    // Update the array with the sorted order
-    for (let i = 0; i < n; i++) {
-      nums[i] = output[i];
-    }
-
-    // Update maxGap after each pass
-    if (exp > 1) {
-      let gap = nums[1] - nums[0];
-      for (let i = 2; i < n; i++) {
-        gap = Math.max(gap, nums[i] - nums[i - 1]);
-      }
-      maxGap = Math.max(maxGap, gap);
-    }
-
-    exp *= radix; // Move to the next digit
+  // Fill the remaining elements with zeroes
+  while (nonZeroIndex < arr.length) {
+    arr[nonZeroIndex] = 0;
+    nonZeroIndex++;
   }
 
-  return maxGap;
+  return arr;
 }
 
 // Example usage:
-const nums = [3, 6, 9, 1];
-console.log(maximumGap(nums)); // Output: 3
+console.log(moveZeroesToEnd([1, 9, 8, 4, 0, 0, 2, 7, 0, 6, 0])); // Output: [1, 9, 8, 4, 2, 7, 6, 0, 0, 0, 0]
+console.log(moveZeroesToEnd([1, 2, 0, 4, 3, 0, 5, 0])); // Output: [1, 2, 4, 3, 5, 0, 0, 0]
+console.log(moveZeroesToEnd([1, 2, 0, 0, 0, 3, 6])); // Output: [1, 2, 3, 6, 0, 0, 0]

@@ -1,54 +1,80 @@
 /* 
 
- 2. **Sort Colors**
+ 2. **Count of Smaller Numbers After Self**
 
-Given an array `nums` with `n` objects colored red, white, or blue, sort them **[in-place](https://en.wikipedia.org/wiki/In-place_algorithm)** so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
-
-We will use the integers `0`, `1`, and `2` to represent the color red, white, and blue, respectively.
-
-You must solve this problem without using the library's sort function.
+Given an integer array `nums`, return *an integer array* `counts` *where* `counts[i]` *is the number of smaller elements to the right of* `nums[i]`.
 
 **Example 1:**
-Input: nums = [2,0,2,1,1,0]
-Output: [0,0,1,1,2,2]
+Input: nums = [5,2,6,1]
+Output: [2,1,1,0]
+Explanation:
+To the right of 5 there are2 smaller elements (2 and 1).
+To the right of 2 there is only1 smaller element (1).
+To the right of 6 there is1 smaller element (1).
+To the right of 1 there is0 smaller element.
 
 **Example 2:**
-Input: nums = [2,0,1]
-Output: [0,1,2]
+Input: nums = [-1]
+Output: [0]
 
-**Constraints:**
+**Example 3:**
+Input: nums = [-1,-1]
+Output: [0,0]
 
-- `n == nums.length`
-- `1 <= n <= 300`
-- `nums[i]` is either `0`, `1`, or `2`.
 */
+function countSmaller(nums) {
+  const result = [];
 
-function sortColors(nums) {
-  let low = 0;
-  let mid = 0;
-  let high = nums.length - 1;
+  // Create a copy of the input array with an additional index property
+  const indexedNums = nums.map((num, index) => ({ num, index }));
 
-  while (mid <= high) {
-    if (nums[mid] === 0) {
-      swap(nums, low, mid);
-      low++;
-      mid++;
-    } else if (nums[mid] === 1) {
-      mid++;
-    } else if (nums[mid] === 2) {
-      swap(nums, mid, high);
-      high--;
+  // Create an array to store the counts
+  const counts = new Array(nums.length).fill(0);
+
+  // Helper function to perform merge sort and count smaller numbers
+  function mergeSort(arr) {
+    if (arr.length <= 1) {
+      return arr;
     }
-  }
-}
 
-function swap(nums, i, j) {
-  const temp = nums[i];
-  nums[i] = nums[j];
-  nums[j] = temp;
+    const mid = Math.floor(arr.length / 2);
+    const left = mergeSort(arr.slice(0, mid));
+    const right = mergeSort(arr.slice(mid));
+
+    const merged = [];
+    let leftIndex = 0;
+    let rightIndex = 0;
+
+    while (leftIndex < left.length || rightIndex < right.length) {
+      if (
+        rightIndex === right.length ||
+        (leftIndex < left.length &&
+          left[leftIndex].num <= right[rightIndex].num)
+      ) {
+        // Count the number of smaller elements on the right
+        counts[left[leftIndex].index] += rightIndex;
+        merged.push(left[leftIndex]);
+        leftIndex++;
+      } else {
+        merged.push(right[rightIndex]);
+        rightIndex++;
+      }
+    }
+
+    return merged;
+  }
+
+  mergeSort(indexedNums);
+
+  // Extract the counts from the indexedNums array
+  for (let i = 0; i < indexedNums.length; i++) {
+    result[indexedNums[i].index] = counts[i];
+  }
+
+  return result;
 }
 
 // Example usage:
-const nums = [2, 0, 2, 1, 1, 0];
-sortColors(nums);
-console.log(nums); // Output: [0, 0, 1, 1, 2, 2]
+console.log(countSmaller([5, 2, 6, 1])); // Output: [2, 1, 1, 0]
+console.log(countSmaller([-1])); // Output: [0]
+console.log(countSmaller([-1, -1])); // Output: [0, 0]

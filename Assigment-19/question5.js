@@ -1,39 +1,48 @@
 /*
- 5. **Contains Duplicate**
+ 5. **Rearrange array in alternating positive & negative items with O(1) extra space**
 
-Given an integer array `nums`, return `true` if any value appears **at least twice** in the array, and return `false` if every element is distinct.
+Given an **array of positive** and **negative numbers**, arrange them in an **alternate** fashion such that every positive number is followed by a negative and vice-versa maintaining the **order of appearance**. The number of positive and negative numbers need not be equal. If there are more positive numbers they appear at the end of the array. If there are more negative numbers, they too appear at the end of the array.
 
-**Example 1:**
-Input: nums = [1,2,3,1]
-Output: true
+**Examples:**
 
-**Example 2:**
-Input: nums = [1,2,3,4]
-Output: false
+Input:  arr[] = {1, 2, 3, -4, -1, 4}
+Output: arr[] = {-4, 1, -1, 2, 3, 4}
 
-**Example 3:**
-Input: nums = [1,1,1,3,3,4,3,2,4,2]
-Output: true
-
-**Constraints:**
-
-- `1 <= nums.length <= 10^5`
-- `109 <= nums[i] <= 10^9`
+Input:  arr[] = {-5, -2, 5, 2, 4, 7, 1, 8, 0, -8}
+Output: arr[] = {-5, 5, -2, 2, -8, 4, 7, 1, 8, 0}
 */
 
-function containsDuplicate(nums) {
-  const set = new Set();
+function rearrangeAlternate(arr) {
+  let i = 0;
 
-  for (const num of nums) {
-    if (set.has(num)) {
-      return true;
+  // Rearrange negative numbers to the left side of the array
+  for (let j = 0; j < arr.length; j++) {
+    if (arr[j] < 0) {
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+      i++;
     }
-    set.add(num);
   }
 
-  return false;
+  let positiveIndex = i;
+  let negativeIndex = 0;
+
+  // Rearrange positive and negative numbers alternately
+  while (
+    positiveIndex < arr.length &&
+    negativeIndex < positiveIndex &&
+    arr[negativeIndex] < 0
+  ) {
+    [arr[negativeIndex], arr[positiveIndex]] = [
+      arr[positiveIndex],
+      arr[negativeIndex],
+    ];
+    positiveIndex++;
+    negativeIndex += 2;
+  }
+
+  return arr;
 }
 
 // Example usage:
-const nums = [1, 2, 3, 1];
-console.log(containsDuplicate(nums)); // Output: true
+console.log(rearrangeAlternate([1, 2, 3, -4, -1, 4])); // Output: [-4, 1, -1, 2, 3, 4]
+console.log(rearrangeAlternate([-5, -2, 5, 2, 4, 7, 1, 8, 0, -8])); // Output: [-5, 5, -2, 2, -8, 4, 7, 1, 8, 0]

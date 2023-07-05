@@ -1,49 +1,67 @@
 /*
 
- 3. **First Bad Version Solution**
+ 3. **Sort an Array**
 
-You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
+Given an array of integers `nums`, sort the array in ascending order and return it.
 
-Suppose you have `n` versions `[1, 2, ..., n]` and you want to find out the first bad one, which causes all the following ones to be bad.
-
-You are given an API `bool isBadVersion(version)` which returns whether `version` is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
+You must solve the problem **without using any built-in** functions in `O(nlog(n))` time complexity and with the smallest space complexity possible.
 
 **Example 1:**
-Input: n = 5, bad = 4
-Output: 4
-Explanation:
-call isBadVersion(3) -> false
-call isBadVersion(5) -> true
-call isBadVersion(4) -> true
-Then 4 is the first bad version.
+Input: nums = [5,2,3,1]
+Output: [1,2,3,5]
+Explanation: After sorting the array, the positions of some numbers are not changed (for example, 2 and 3), while the positions of other numbers are changed (for example, 1 and 5).
 
 **Example 2:**
-Input: n = 1, bad = 1
-Output: 1
+Input: nums = [5,1,1,2,0,0]
+Output: [0,0,1,1,2,5]
+Explanation: Note that the values of nums are not necessairly unique.
 
 **Constraints:**
 
-- `1 <= bad <= n <= 2^31 - 1`
+- `1 <= nums.length <= 5 * 10000`
+- `-5 * 104 <= nums[i] <= 5 * 10000`
 
 */
+function sortArray(nums) {
+  if (nums.length <= 1) {
+    return nums;
+  }
 
-function firstBadVersion(n) {
-  let left = 1;
-  let right = n;
+  const mid = Math.floor(nums.length / 2);
+  const left = sortArray(nums.slice(0, mid));
+  const right = sortArray(nums.slice(mid));
 
-  while (left < right) {
-    const mid = left + Math.floor((right - left) / 2);
-    if (isBadVersion(mid)) {
-      right = mid;
+  return merge(left, right);
+}
+
+function merge(left, right) {
+  const merged = [];
+  let leftIndex = 0;
+  let rightIndex = 0;
+
+  while (leftIndex < left.length && rightIndex < right.length) {
+    if (left[leftIndex] <= right[rightIndex]) {
+      merged.push(left[leftIndex]);
+      leftIndex++;
     } else {
-      left = mid + 1;
+      merged.push(right[rightIndex]);
+      rightIndex++;
     }
   }
 
-  return left;
+  while (leftIndex < left.length) {
+    merged.push(left[leftIndex]);
+    leftIndex++;
+  }
+
+  while (rightIndex < right.length) {
+    merged.push(right[rightIndex]);
+    rightIndex++;
+  }
+
+  return merged;
 }
 
 // Example usage:
-const n = 5;
-const bad = 4;
-console.log(firstBadVersion(n)); // Output: 4
+console.log(sortArray([5, 2, 3, 1])); // Output: [1, 2, 3, 5]
+console.log(sortArray([5, 1, 1, 2, 0, 0])); // Output: [0, 0, 1, 1, 2, 5]

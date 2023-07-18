@@ -98,4 +98,44 @@ Class-based components and function-based components are two different approache
 It's important to note that, as of my knowledge cutoff in September 2021, React Hooks are widely adopted and encouraged by the React community. They provide powerful capabilities for function-based components and have become the preferred approach for most new React development.
 
  ** Q.6 Explain react component life cycle **
+ The React component lifecycle refers to a series of methods that are invoked at different stages of a component's existence. These methods allow you to perform specific actions or implement logic during different phases of a component's lifecycle, such as component initialization, rendering, updating, and unmounting. 
+
+In the latest versions of React (16.3 and above), the lifecycle methods have been split into three phases: Mounting, Updating, and Unmounting.
+
+1. Mounting Phase:
+   - `constructor()`: This is the first method called when a component is created. It is used for initializing state and binding event handlers.
+   - `static getDerivedStateFromProps()`: This method is called before rendering and allows you to update the component's state based on changes in props.
+   - `render()`: This method is responsible for rendering the component's JSX markup.
+   - `componentDidMount()`: This method is called immediately after the component is rendered for the first time. It is often used to perform side effects such as data fetching or setting up subscriptions.
+
+2. Updating Phase:
+   - `static getDerivedStateFromProps()`: This method is also called during the updating phase, allowing you to update the component's state based on changes in props.
+   - `shouldComponentUpdate()`: This method is invoked before re-rendering a component. It determines whether the component should update or not based on the changes in props or state. You can optimize performance by implementing custom logic here.
+   - `render()`: This method re-renders the component's JSX markup if there are any changes.
+   - `getSnapshotBeforeUpdate()`: This method is called right before changes are applied to the DOM. It allows you to capture some information from the previous DOM state, which can be later used in `componentDidUpdate()`.
+   - `componentDidUpdate()`: This method is called after the component has been updated and the changes have been applied to the DOM. It is used for performing side effects like updating the DOM or fetching new data based on the changes.
+
+3. Unmounting Phase:
+   - `componentWillUnmount()`: This method is invoked when the component is about to be removed from the DOM. It allows you to perform cleanup tasks such as canceling network requests, removing event listeners, or clearing timers.
+
+In addition to these methods, there are a few other lifecycle methods that are less commonly used or have specific use cases, such as `componentDidCatch()` for error handling and `getDerivedStateFromError()` for updating state when an error occurs within a component.
+
+** Q.7 Explain Prop Drilling in React & Ways to avoid it **
+Prop drilling in React refers to the process of passing props through multiple intermediate components that do not need the props themselves but are required to pass them down to their child components. This can occur when components are nested deeply in the component tree, and the data or functionality needs to be passed down to the leaf components.
+
+Prop drilling can lead to code that is difficult to maintain and understand because it introduces unnecessary dependencies between components. It can also make it harder to refactor or modify components in the future.
+
+To avoid prop drilling in React, there are a few techniques and patterns you can follow:
+
+1. Use Context API: Context allows you to share data and functions across the component tree without explicitly passing them through every component. You can create a context at a higher level in the tree and provide it to the components that need access to the shared data. This way, you can avoid passing props through intermediate components. React's Context API provides a way to consume and update the shared context values.
+
+2. Component Composition: Instead of passing props through multiple components, you can compose your components in a way that reduces the need for prop drilling. Create higher-level container components that manage the state and logic and provide the necessary data and functions to their child components. This way, the intermediate components do not need to pass props that they do not use.
+
+3. Use Custom Hooks: Custom Hooks are a powerful feature in React that allows you to extract and reuse stateful logic across components. By encapsulating the logic in custom hooks, you can provide the necessary data and functions to the components that need them without having to pass them through intermediate components.
+
+4. State Management Libraries: Consider using state management libraries like Redux or MobX. These libraries provide a centralized store where you can store and retrieve data. Instead of passing props through multiple components, you can access the required data from the store directly, making the data available to the components that need it.
+
+5. Higher-Order Components (HOC) and Render Props: Higher-Order Components and Render Props are patterns that allow you to share functionality between components without prop drilling. HOCs wrap a component and provide additional props or behavior, while Render Props involve passing a function as a prop that receives data or functions to be used by the child component.
+
+By applying these techniques and patterns, you can avoid prop drilling and create a more maintainable and scalable React application. The choice of the specific approach depends on the complexity of your application, the specific use case, and the preferences of your development team.
  */
